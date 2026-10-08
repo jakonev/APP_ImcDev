@@ -11,49 +11,30 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # 1. Baixa o código do repositório
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Configura o Java usando a versão v5 (Resolve o aviso de depreciação)
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      # 3. Configura o Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
+          cache: true
 
-      # 4. Instala dependências nativas e exibe detalhes se falhar
-      - name: Install Pods
-        run: |
-          flutter pub get
-          cd ios
-          pod repo update
-          pod install --repo-update
-          cd ..
+      - name: Install dependencies
+        run: flutter pub get
 
-      # 5. Gera o build limpando o cache anterior para evitar conflitos
-      - name: Build IPA
+      - name: Build iOS (no codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: Package IPA
         run: |
-          flutter clean
-          flutter pub get
-          flutter build ios --release --no-codesign
           cd build/ios/iphoneos
           mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
+          cp -r Runner.app Payload/
           zip -r app.ipa Payload
 
-      # 6. Salva o arquivo .ipa nos artefatos
-      - name: Upload IPA Artifact
+      - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: ios-ipa-build
           path: build/ios/iphoneos/app.ipa
-
