@@ -33,11 +33,22 @@ class MainActivity : AppCompatActivity() {
         val alturaConvertido: Double = altura.toDouble()
 
         val resultadoIMC = pesoConvertido / (alturaConvertido * alturaConvertido)
+        val imcFormatado = String.format(java.util.Locale.getDefault(), "%.2f", resultadoIMC)
 
-        textREsultado.setText("O SEU IMC GORDAO É $resultadoIMC")
+        textREsultado.setText("O SEU IMC GORDAO É $imcFormatado")
 
 
 
+    }
+
+    fun limparCampos(view: View) {
+        val edidtPeso = findViewById<EditText>(R.id.editPeso)
+        val edidtAltura = findViewById<EditText>(R.id.editAltura)
+        val textREsultado = findViewById<TextView>(R.id.textResultado)
+
+        edidtPeso.setText("")
+        edidtAltura.setText("")
+        textREsultado.setText(R.string.resultado)
     }
 
 

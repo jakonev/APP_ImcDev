@@ -4,5 +4,6 @@
     <string name="digite_seu_peso">Digite seu Peso</string>
     <string name="digitar_altura">Digitar Altura</string>
     <string name="calcular_o_seu_imc_gordao">Calcular o seu IMC gordao</string>
+    <string name="limpar">Limpar</string>
     <string name="resultado">RESULTADO</string>
 </resources>
